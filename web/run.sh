@@ -56,7 +56,7 @@ blackfire.server_id=${BLACKFIRE_SERVER_ID}
 blackfire.server_token=${BLACKFIRE_SERVER_TOKEN}
 HEREDOC
 
-    echo "${BLACKFIRE_INI}" >> /etc/php5/cli/conf.d/blackfire.ini
+    echo "${BLACKFIRE_INI}" >> /usr/local/etc/php/conf.d/blackfire.ini
 }
 
 function init_xdebug()
@@ -77,9 +77,9 @@ xdebug.remote_connect_back=1
 xdebug.remote_handler=dbgp
 HEREDOC
 
-    echo "${XDEBUG_INI}" >> /etc/php5/apache2/conf.d/20-xdebug.ini
+    echo "${XDEBUG_INI}" >> /etc/php/7.0/mods-available/xdebug.ini
 
-     read -r -d '' XDEBUG_PROFILE <<HEREDOC
+    read -r -d '' XDEBUG_PROFILE <<HEREDOC
 # Xdebug
 export PHP_IDE_CONFIG="serverName=${XDEBUG_SERVER_NAME}"
 export XDEBUG_CONFIG="remote_host=$(/sbin/ip route|awk '/default/ { print $3 }') idekey=${XDEBUG_IDE_KEY}"
@@ -88,20 +88,35 @@ HEREDOC
     echo "${XDEBUG_PROFILE}" >> ~/.bashrc
 }
 
+function init_opcache()
+{
+    read -r -d '' OPCACHE_INI <<HEREDOC
+[OPcache]
+opcache.memory_consumption=512
+opcache.revalidate_freq=60
+opcache.validate_timestamps=1
+opcache.max_accelerated_files=5000
+HEREDOC
+
+    echo "${OPCACHE_INI}" >> /etc/php/7.0/mods-available/opcache.ini
+}
+
 LOCK_FILE="/var/docker.lock"
 if [[ ! -e "${LOCK_FILE}" ]]; then
 
     init_server
     init_configuration
     init_vhosts
+    init_opcache
     init_xdebug
-    init_blackfire
+    #init_blackfire
 
     service apache2 restart
 
     touch "${LOCK_FILE}"
 else
     init_vhosts
+    composer self-update
     service apache2 start
 fi
 
