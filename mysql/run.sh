@@ -16,7 +16,7 @@ function init_configuration()
 
 function start_mysql()
 {
-    mysqld &
+    mysqld --user=root &
     PROCESS_ID=$!
 
     echo "Waiting MySQL..."
@@ -57,7 +57,10 @@ LOCK_FILE="/var/docker.lock"
 if [[ ! -e "${LOCK_FILE}" ]]; then
     cp /docker-entrypoint.sh /docker-entrypoint-custom.sh
     sed -i -e "s|exec \"\$@\"|#exec \"\$@\"|g" /docker-entrypoint-custom.sh
-    /bin/bash /docker-entrypoint-custom.sh mysqld
+    rm -rf /var/run/mysqld/*
+    chgrp mysql /var/run/mysqld/
+    chmod g+w /var/run/mysqld/
+    /bin/bash /docker-entrypoint-custom.sh mysqld --user=root
 
     init_configuration
     start_mysql
@@ -65,5 +68,8 @@ if [[ ! -e "${LOCK_FILE}" ]]; then
     touch "${LOCK_FILE}"
     wait "${PROCESS_ID}"
 else
-    /bin/bash /docker-entrypoint.sh mysqld
+    rm -rf /var/run/mysqld/*
+    chgrp mysql /var/run/mysqld/
+    chmod g+w /var/run/mysqld/
+    /bin/bash /docker-entrypoint.sh mysqld --user=root
 fi
