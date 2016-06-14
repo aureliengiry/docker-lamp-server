@@ -25,7 +25,7 @@ function init_vhosts()
     SCRIPT_PATH="$(readlink -e "${0}")"
     DIRECTORY_PATH="$(dirname "${SCRIPT_PATH}")"
 
-    VHOSTS_PATH="${DIRECTORY_PATH}/vhosts"
+    VHOSTS_PATH="${DIRECTORY_PATH}/extra"
     echo "${VHOSTS_PATH}"
     if [[ -d "${VHOSTS_PATH}" ]]; then
         VHOST_FILES="$(find "${VHOSTS_PATH}" -maxdepth 1 -type f -name *.conf)"
