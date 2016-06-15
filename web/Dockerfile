@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:wily
 
 MAINTAINER Aurélien GIRY <aurelien.giry@gmail.com>
 
