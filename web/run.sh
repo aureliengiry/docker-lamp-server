@@ -79,10 +79,11 @@ HEREDOC
 
     echo "${XDEBUG_INI}" >> /etc/php5/apache2/conf.d/20-xdebug.ini
 
-     read -r -d '' XDEBUG_PROFILE <<HEREDOC
+    read -r -d '' XDEBUG_PROFILE <<HEREDOC
 # Xdebug
-export PHP_IDE_CONFIG="serverName=Xdebug andromeda"
-export XDEBUG_CONFIG="remote_host=$(echo $SSH_CLIENT | awk '{print $1}') idekey=PHPSTORM"
+export PHP_IDE_CONFIG="serverName=Debug magento-docker"
+DOCKER_HOST=$(/sbin/ip route|awk '/default/ { print $3 }')
+export XDEBUG_CONFIG="remote_host=$DOCKER_HOST idekey=PHPSTORM"
 HEREDOC
 
     echo "${XDEBUG_PROFILE}" >> ~/.profile
