@@ -1,4 +1,4 @@
-Docker for LAMP Server [![Build Status](https://travis-ci.org/aureliengiry/docker-lamp.svg?branch=master)](https://travis-ci.org/aureliengiry/docker-lamp)
+Docker for LAMP Server [![Build Status](https://travis-ci.org/aureliengiry/docker-lamp-server.svg?branch=master)](https://travis-ci.org/aureliengiry/docker-lamp-server)
 ======================
 
 ## Architecture
