@@ -85,7 +85,7 @@ export PHP_IDE_CONFIG="serverName=${XDEBUG_SERVER_NAME}"
 export XDEBUG_CONFIG="remote_host=$(/sbin/ip route|awk '/default/ { print $3 }') idekey=${XDEBUG_IDE_KEY}"
 HEREDOC
 
-    echo "${XDEBUG_PROFILE}" >> ~/.profile
+    echo "${XDEBUG_PROFILE}" >> ~/.bashrc
 }
 
 LOCK_FILE="/var/docker.lock"
