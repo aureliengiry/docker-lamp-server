@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     apache2 \
     php5 \
     libapache2-mod-php5 \
-    build-essential
+    build-essential \
+    acl
 
 RUN apt-get update && apt-get install -y autoconf \
     cron \
@@ -30,10 +31,7 @@ RUN apt-get update && apt-get install -y autoconf \
     php5-gd \
     mysql-client
 
-RUN apt-get update && apt-get install -y python-pip \
-    python-dev
 
-RUN pip install --upgrade pip virtualenv Sphinx
 
 RUN \
     curl -sS https://getcomposer.org/installer | php && \
