@@ -34,3 +34,9 @@ services:
      - "8888:8888"
     volumes_from:
      - web
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    env_file: docker-env
+    ports:
+      - "1080:1080"

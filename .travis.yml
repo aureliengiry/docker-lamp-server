@@ -16,6 +16,7 @@ install:
 
 script:
   - cp docker-env.dist docker-env
+  - cp docker-compose.yml.dist docker-compose.yml
   - docker-compose up -d
   - docker-compose ps
   

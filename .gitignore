@@ -3,3 +3,4 @@ percona/extra/*
 web/extra/*
 !web/extra/.gitkeep
 docker-env
+docker-compose.yml
