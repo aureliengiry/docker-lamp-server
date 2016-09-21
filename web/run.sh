@@ -21,12 +21,11 @@ function init_configuration()
 
 function init_vhosts()
 {
-    echo "init_vhosts"
-    SCRIPT_PATH="$(readlink -e "${0}")"
-    DIRECTORY_PATH="$(dirname "${SCRIPT_PATH}")"
+    echo "Disabled all vhosts"
+    rm /etc/apache2/sites-enabled/*
 
-    VHOSTS_PATH="${DIRECTORY_PATH}/extra"
-    echo "${VHOSTS_PATH}"
+    echo "Init vhosts"
+    VHOSTS_PATH="/etc/apache2/sites-available/"
     if [[ -d "${VHOSTS_PATH}" ]]; then
         VHOST_FILES="$(find "${VHOSTS_PATH}" -maxdepth 1 -type f -name *.conf)"
         if [[ ! -z "${VHOST_FILES}" ]]; then
@@ -34,10 +33,7 @@ function init_vhosts()
                 FILENAME="$(basename "${FILE}")"
 
                 VHOST_NAME="$(echo "${FILENAME}" | cut -d : -f 1)"
-                VHOST_PORT="$(echo "${FILENAME}" | cut -d : -f 2)"
-                VHOST_CONTENT="$(< "${FILE}")"
 
-                echo "${VHOST_CONTENT}" > /etc/apache2/sites-available/${FILENAME}
                 a2ensite "${VHOST_NAME}"
             done
         fi

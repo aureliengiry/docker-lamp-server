@@ -16,7 +16,7 @@ RUN apt-get update --fix-missing
 RUN apt-get autoremove --purge php5*
 
 # PHP 7
-RUN apt-get update && apt-get install -y autoconf \
+RUN apt-get update --fix-missing && apt-get install -y autoconf \
     php7.0 \
     libapache2-mod-php7.0 \
     php7.0-apcu \
