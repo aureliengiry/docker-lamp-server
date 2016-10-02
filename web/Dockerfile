@@ -63,7 +63,10 @@ RUN \
     mv composer.phar /usr/local/bin/composer
 
 # Install phpunit
-RUN apt-get install -y -f phpunit
+RUN \
+    wget https://phar.phpunit.de/phpunit.phar && \
+    chmod +x phpunit.phar && \
+    mv phpunit.phar /usr/local/bin/phpunit 
 
 RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.0/cli/php.ini
 RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.0/apache2/php.ini
