@@ -10,3 +10,4 @@ Here are the environment containers:
 * `blackfire`: This is the Blackfire container (used for profiling the application).
 * `nodejs`: This is the Node JS container.
 * `mailcatcher`: This is the mailcatcher container (used for email testing, web interface is accessible on http://127.0.0.1:1080).
+* `rabbitmq`: This is the rabbitmq container (web interface is accessible on http://127.0.0.1:15672).
