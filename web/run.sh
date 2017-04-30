@@ -94,7 +94,7 @@ opcache.validate_timestamps=1
 opcache.max_accelerated_files=5000
 HEREDOC
 
-    echo "${OPCACHE_INI}" >> /etc/php/7.0/mods-available/opcache.ini
+    echo "${OPCACHE_INI}" >> /etc/php/7.1/mods-available/opcache.ini
 }
 
 LOCK_FILE="/var/docker.lock"

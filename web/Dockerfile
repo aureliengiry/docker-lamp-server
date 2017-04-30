@@ -12,34 +12,43 @@ RUN wget https://www.dotdeb.org/dotdeb.gpg
 RUN apt-key add dotdeb.gpg
 RUN apt-get update --fix-missing
 
+# https://www.noobunbox.net/serveur/auto-hebergement/installer-php-7-1-sous-debian-et-ubuntu
+RUN apt-get install -y apt-transport-https lsb-release ca-certificates
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+RUN apt-get update
+
 # Delete PHP5
 RUN apt-get autoremove --purge php5*
 
-# PHP 7
+# Delete PHP 7.0
+RUN apt-get autoremove --purge php7*
+
+# PHP 7.1
 RUN apt-get update --fix-missing && apt-get install -y autoconf \
-    php7.0 \
-    libapache2-mod-php7.0 \
-    php7.0-apcu \
-    php7.0-apcu-bc \
-    php7.0-cli \
-    php7.0-mysql \
-    php7.0-curl \
-    php7.0-json \
-    php7.0-gd \
-    php7.0-mcrypt \
-    php7.0-msgpack \
-    php7.0-intl \
-    php7.0-sqlite3 \
-    php7.0-gmp \
-    php7.0-geoip \
-    php7.0-mbstring \
-    php7.0-xml \
-    php7.0-zip \
-    php7.0-mongodb \
-    php7.0-xdebug \
-    php7.0-xmlrpc \
-    php7.0-xsl \
-    php7.0-dev \
+    php7.1 \
+    libapache2-mod-php7.1 \
+    php7.1-apcu \
+    php7.1-apcu-bc \
+    php7.1-cli \
+    php7.1-mysql \
+    php7.1-curl \
+    php7.1-json \
+    php7.1-gd \
+    php7.1-mcrypt \
+    php7.1-msgpack \
+    php7.1-intl \
+    php7.1-sqlite3 \
+    php7.1-gmp \
+    php7.1-geoip \
+    php7.1-mbstring \
+    php7.1-xml \
+    php7.1-zip \
+    php7.1-mongodb \
+    php7.1-xdebug \
+    php7.1-xmlrpc \
+    php7.1-xsl \
+    php7.1-dev \
     php-pear
 
 # Tools
@@ -68,8 +77,8 @@ RUN \
     chmod +x phpunit.phar && \
     mv phpunit.phar /usr/local/bin/phpunit 
 
-RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.0/cli/php.ini
-RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.0/apache2/php.ini
+RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.1/cli/php.ini
+RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.1/apache2/php.ini
 
 RUN pecl update-channels
 
