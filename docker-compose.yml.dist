@@ -40,3 +40,12 @@ services:
     env_file: docker-env
     ports:
       - "1080:1080"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    env_file: docker-env
+    ports:
+      - "15672:15672"
+    tty: true
+    restart: always
+    

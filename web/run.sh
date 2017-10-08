@@ -52,7 +52,7 @@ blackfire.server_id=${BLACKFIRE_SERVER_ID}
 blackfire.server_token=${BLACKFIRE_SERVER_TOKEN}
 HEREDOC
 
-    echo "${BLACKFIRE_INI}" >> /usr/local/etc/php/conf.d/blackfire.ini
+    echo "${BLACKFIRE_INI}" >>  /usr/local/etc/php/conf.d/blackfire.ini
 }
 
 function init_xdebug()
@@ -73,7 +73,7 @@ xdebug.remote_connect_back=1
 xdebug.remote_handler=dbgp
 HEREDOC
 
-    echo "${XDEBUG_INI}" >> /etc/php/7.0/mods-available/xdebug.ini
+    echo "${XDEBUG_INI}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
     read -r -d '' XDEBUG_PROFILE <<HEREDOC
 # Xdebug
@@ -102,18 +102,17 @@ if [[ ! -e "${LOCK_FILE}" ]]; then
 
     init_server
     init_configuration
-    init_vhosts
-    init_opcache
+    # init_opcache
     init_xdebug
     #init_blackfire
 
     service apache2 restart
 
     touch "${LOCK_FILE}"
-else
-    init_vhosts
-    composer self-update
-    service apache2 start
 fi
+
+init_vhosts
+composer self-update
+service apache2 start
 
 tail -f /dev/null

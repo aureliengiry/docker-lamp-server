@@ -1,72 +1,73 @@
-FROM debian:jessie
-
+FROM php:7.1-apache
 MAINTAINER Aurélien GIRY <aurelien.giry@gmail.com>
 
 COPY . /usr/local/docker
 RUN chmod -R 777 /usr/local/docker
 
-# Add Dotdeb depot
-RUN apt-get update && apt-get -y -q install wget
-RUN echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list
-RUN wget https://www.dotdeb.org/dotdeb.gpg
-RUN apt-key add dotdeb.gpg
-RUN apt-get update --fix-missing
 
-# https://www.noobunbox.net/serveur/auto-hebergement/installer-php-7-1-sous-debian-et-ubuntu
-RUN apt-get install -y apt-transport-https lsb-release ca-certificates
-RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
-RUN apt-get update
+# # PHP 7.1
+# RUN apt-get update --fix-missing && apt-get install -y autoconf \
+#     php7.1 \
+#     libapache2-mod-php7.1 \
+#     php7.1-apcu \
+#     php7.1-apcu-bc \
+#     php7.1-cli \
+#     php7.1-mysql \
+#     php7.1-curl \
+#     php7.1-json \
+#     php7.1-gd \
+#     php7.1-mcrypt \
+#     php7.1-msgpack \
+#     php7.1-intl \
+#     php7.1-sqlite3 \
+#     php7.1-gmp \
+#     php7.1-geoip \
+#     php7.1-mbstring \
+#     php7.1-xml \
+#     php7.1-zip \
+#     php7.1-mongodb \
+#     php7.1-xdebug \
+#     php7.1-xmlrpc \
+#     php7.1-xsl \
+#     php7.1-dev \
+#     php-pear
 
-# Delete PHP5
-RUN apt-get autoremove --purge php5*
+RUN apt-get update && apt-get install -y \
+        php-soap \
+        php-http-request \
+        libxml2-dev \
+        libxml2-utils \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng12-dev \
+        vim \
+        mysql-client \
+        telnet \
+        netcat \
+        wget \
+        git \
+        libicu-dev \
+        python-pip \
+        python-dev
 
-# Delete PHP 7.0
-RUN apt-get autoremove --purge php7*
+RUN docker-php-ext-install soap gd zip intl opcache pdo pdo_mysql mysqli mbstring
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug opcache
 
-# PHP 7.1
-RUN apt-get update --fix-missing && apt-get install -y autoconf \
-    php7.1 \
-    libapache2-mod-php7.1 \
-    php7.1-apcu \
-    php7.1-apcu-bc \
-    php7.1-cli \
-    php7.1-mysql \
-    php7.1-curl \
-    php7.1-json \
-    php7.1-gd \
-    php7.1-mcrypt \
-    php7.1-msgpack \
-    php7.1-intl \
-    php7.1-sqlite3 \
-    php7.1-gmp \
-    php7.1-geoip \
-    php7.1-mbstring \
-    php7.1-xml \
-    php7.1-zip \
-    php7.1-mongodb \
-    php7.1-xdebug \
-    php7.1-xmlrpc \
-    php7.1-xsl \
-    php7.1-dev \
-    php-pear
+# # Tools
+# RUN apt-get update --fix-missing && apt-get install -y autoconf \
+#     git \
+#     default-jre \
+#     acl \
+#     curl \
+#     make \
+#     vim \
+#     mysql-client
 
-# Tools
-RUN apt-get update --fix-missing && apt-get install -y autoconf \
-    git \
-    default-jre \
-    acl \
-    curl \
-    make \
-    vim \
-    mysql-client
+# Sphinx documentation
+RUN pip install sphinx sphinx-autobuild sphinx_rtd_theme sphinxcontrib-phpdomain git+https://github.com/fabpot/sphinx-php.git
 
-# Python
-RUN apt-get update && apt-get install -y python-pip \
-    python-dev
-
-RUN pip install --upgrade pip virtualenv Sphinx
-
+# Composer
 RUN \
     curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
@@ -77,8 +78,8 @@ RUN \
     chmod +x phpunit.phar && \
     mv phpunit.phar /usr/local/bin/phpunit 
 
-RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.1/cli/php.ini
-RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.1/apache2/php.ini
+# RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.1/cli/php.ini
+# RUN echo 'date.timezone = Europe/Paris' >> /etc/php/7.1/apache2/php.ini
 
 RUN pecl update-channels
 
